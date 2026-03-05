@@ -5,7 +5,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;  // ← ESTE IMPORT FALTABA
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -34,7 +34,7 @@ public class HomeActivity extends AppCompatActivity {
             }
         });
 
-        // Navegación inferior
+        // Navegación inferior - INICIO
         tvInicio.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -42,22 +42,25 @@ public class HomeActivity extends AppCompatActivity {
             }
         });
 
+        // Navegación inferior - REGISTROS
         tvRegistros.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(HomeActivity.this, "Ver todos los registros", Toast.LENGTH_SHORT).show();
-                // Aquí iría una actividad de lista de registros
+                Intent intent = new Intent(HomeActivity.this, RegistrosActivity.class);
+                startActivity(intent);
             }
         });
 
+        // Navegación inferior - CALENDARIO (ACTUALIZADO)
         tvCalendario.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(HomeActivity.this, "Calendario", Toast.LENGTH_SHORT).show();
-                // Aquí iría una actividad de calendario
+                Intent intent = new Intent(HomeActivity.this, CalendarioActivity.class);
+                startActivity(intent);
             }
         });
 
+        // Navegación inferior - PERFIL
         tvPerfil.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

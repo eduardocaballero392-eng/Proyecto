@@ -249,48 +249,48 @@
     <!-- Barra de navegación inferior -->
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="56dp"
-        android:orientation="horizontal"
-        android:gravity="center_vertical"
+        android:layout_height="66dp"
+        android:layout_marginTop="8dp"
         android:background="#FFFFFF"
-        android:weightSum="4"
-        android:layout_marginTop="8dp">
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:weightSum="4">
 
         <TextView
             android:id="@+id/tvInicio"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:gravity="center"
             android:text="Inicio"
-            android:textColor="#2E7D32"
-            android:gravity="center"/>
+            android:textColor="#2E7D32" />
 
         <TextView
             android:id="@+id/tvRegistros"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:gravity="center"
             android:text="Registros"
-            android:textColor="#666666"
-            android:gravity="center"/>
+            android:textColor="#666666" />
 
         <TextView
             android:id="@+id/tvCalendario"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:gravity="center"
             android:text="Calendario"
-            android:textColor="#666666"
-            android:gravity="center"/>
+            android:textColor="#666666" />
 
         <TextView
             android:id="@+id/tvPerfil"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:gravity="center"
             android:text="Perfil"
-            android:textColor="#666666"
-            android:gravity="center"/>
+            android:textColor="#666666" />
     </LinearLayout>
 
 </LinearLayout>

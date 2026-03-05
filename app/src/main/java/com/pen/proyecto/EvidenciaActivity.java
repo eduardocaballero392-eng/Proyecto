@@ -94,6 +94,12 @@ public class EvidenciaActivity extends AppCompatActivity {
     private void guardarRegistro() {
         String descripcion = etDescripcion.getText().toString().trim();
         String pesoStr = etPesoEstimado.getText().toString().trim();
-        Toast.makeText(this, "Registro guardado correctamente", Toast.LENGTH_SHORT).show();
+
+        Toast.makeText(this, "✅ Registro guardado correctamente", Toast.LENGTH_SHORT).show();
+
+        // Ahora HomeActivity SÍ existe
+        Intent intent = new Intent(EvidenciaActivity.this, HomeActivity.class);
+        startActivity(intent);
+        finish();
     }
 }

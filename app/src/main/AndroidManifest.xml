@@ -7,7 +7,6 @@
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.CAMERA" />
 
-    <!-- ESTA LÍNEA NUEVA -->
     <uses-feature android:name="android.hardware.camera" android:required="false" />
 
     <application
@@ -26,9 +25,9 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyBgvzHi0dZOkS8tZZnbSLZ3J5AW2ZK_gtQ" />
 
-        <!-- Actividad Principal -->
+        <!-- 🟢 Login Activity (primera pantalla) -->
         <activity
-            android:name=".MainActivity"
+            android:name=".LoginActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -36,9 +35,17 @@
             </intent-filter>
         </activity>
 
-        <!-- Segunda Actividad -->
+        <!-- Actividad Principal (mapa) -->
+        <activity
+            android:name=".MainActivity"
+            android:exported="false" />
+
+        <!-- Segunda Actividad (evidencia) -->
         <activity
             android:name=".EvidenciaActivity"
+            android:exported="false" />
+        <activity
+            android:name=".HomeActivity"
             android:exported="false" />
 
     </application>

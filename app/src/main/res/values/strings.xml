@@ -1,21 +1,87 @@
 <resources>
-    <string name="app_name">Proyecto</string>
+    <!-- Nombre de la app -->
+    <string name="app_name">ECOLIM S.A.C.</string>
+
+    <!-- Títulos generales -->
+    <string name="ecolim_titulo">ECOLIM S.A.C.</string>
+    <string name="ecolim_subtitulo">Control de Residuos Sólidos</string>
+
+    <!-- Login -->
+    <string name="bienvenido">Bienvenido</string>
+    <string name="inicia_sesion">Inicia sesión para continuar</string>
+    <string name="usuario_hint">Usuario</string>
+    <string name="contrasena_hint">Contraseña</string>
+    <string name="olvidaste_contrasena">¿Olvidaste tu contraseña?</string>
+    <string name="iniciar_sesion">Iniciar Sesión</string>
+    <string name="version_app">Versión 1.0.0</string>
+
+    <!-- Home / Dashboard -->
+    <string name="hoy">Hoy</string>
+    <string name="semana">Semana</string>
+    <string name="mes">Mes</string>
+    <string name="nuevo_registro">Nuevo Registro</string>
+    <string name="calendario">Calendario</string>
+    <string name="ver_todos">Ver todos →</string>
+    <string name="registros_recientes">📋 Registros recientes</string>
+
+    <!-- Navegación inferior -->
+    <string name="nav_inicio">Inicio</string>
+    <string name="nav_registros">Registros</string>
+    <string name="nav_nuevo">Nuevo</string>
+    <string name="nav_calendario">Calendario</string>
+    <string name="nav_perfil">Perfil</string>
+
+    <!-- Evidencia -->
+    <string name="nueva_evidencia">Nueva Evidencia</string>
+    <string name="registra_residuos">Registra los residuos encontrados</string>
+    <string name="tomar_foto">Tomar foto</string>
+    <string name="grabar_video">Grabar video</string>
+    <string name="captura_imagenes">Captura imágenes</string>
+    <string name="graba_evidencia_texto">Graba evidencia</string>
+    <string name="analisis_residuos">Análisis de residuos</string>
+    <string name="papel_carton">Papel/Cartón</string>
+    <string name="confianza">98% confianza</string>
+    <string name="confianza_alta">Confianza alta</string>
+    <string name="descripcion_ejemplo">Gran cantidad de folletos y propaganda electoral de papel esparcidos sobre la vía pública.</string>
+    <string name="recomendacion_titulo">📌 Recomendación</string>
+    <string name="recomendacion_texto">Recoger y depositar en el contenedor azul para su reciclaje. Asegurarse de que el papel no esté excesivamente húmedo o contaminado con grasa.</string>
+    <string name="archivos_adjuntos">Archivos adjuntos</string>
+    <string name="archivo_ejemplo">evidencia_001.jpg</string>
+    <string name="agregar_archivo">+ Agregar archivo</string>
+    <string name="detalles_registro">Detalles del registro</string>
+    <string name="obligatorio">Obligatorio</string>
+    <string name="peso_hint">Ingresa el peso estimado (kg)</string>
+    <string name="guardar_evidencia">Guardar evidencia</string>
+
+    <!-- Registros -->
+    <string name="todos_registros">Todos los Registros</string>
+    <string name="resumen_por_tipo">Resumen por tipo</string>
+    <string name="filtro_todo">Todo</string>
+    <string name="filtro_papel">Papel/Cartón</string>
+    <string name="filtro_plastico">Plástico</string>
+    <string name="filtro_vidrio">Vidrio</string>
+    <string name="filtro_organico">Orgánico</string>
+    <string name="filtro_mixto">Mixto</string>
     <string name="registros_titulo">Registros</string>
     <string name="resumen_por_mes">Resumen por mes</string>
-    <string name="registros_recientes">Registros recientes</string>
-    <string name="todo">Todo</string>
-    <string name="seleccionar_categoria">Seleccionar categoría</string>
-    <string name="seleccionar_mes">Seleccionar mes</string>
-    <string name="enero">Enero</string>
-    <string name="febrero">Febrero</string>
-    <string name="marzo">Marzo</string>
-    <string name="abril">Abril</string>
-    <string name="mayo">Mayo</string>
-    <string name="junio">Junio</string>
-    <string name="julio">Julio</string>
-    <string name="agosto">Agosto</string>
-    <string name="septiembre">Septiembre</string>
-    <string name="octubre">Octubre</string>
-    <string name="noviembre">Noviembre</string>
-    <string name="diciembre">Diciembre</string>
+
+    <!-- Calendario -->
+    <string name="calendario_titulo">Calendario</string>
+    <string name="registros_dia">registros</string>
+
+    <!-- Perfil -->
+    <string name="perfil_titulo">Mi Perfil</string>
+    <string name="control_residuos">Control de Residuos Sólidos</string>
+    <string name="total_registros">Total Registros</string>
+    <string name="kg_total">Kg Total</string>
+    <string name="kg_mes">Kg Mes</string>
+    <string name="tipos_frecuentes">Tipos más frecuentes</string>
+    <string name="mixto">Mixto</string>
+    <string name="cerrar_sesion">🔒 Cerrar Sesión</string>
+
+    <!-- Mensajes -->
+    <string name="registro_guardado">✅ Registro guardado correctamente</string>
+    <string name="selecciona_punto">Haz clic en el mapa para seleccionar un punto</string>
+    <string name="bienvenido_usuario">Bienvenido %s</string>
+    <string name="error_login">Usuario o contraseña incorrectos</string>
 </resources>

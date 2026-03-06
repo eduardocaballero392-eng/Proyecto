@@ -25,33 +25,45 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyBgvzHi0dZOkS8tZZnbSLZ3J5AW2ZK_gtQ" />
 
-        <!-- 🟢 Login Activity (primera pantalla) -->
+        <!-- Login Activity -->
         <activity
             android:name=".LoginActivity"
-            android:exported="true">
+            android:exported="true"
+            android:theme="@style/Theme.Proyecto">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
 
-        <!-- Actividad Principal (mapa) -->
+        <!-- Home Activity -->
+        <activity
+            android:name=".HomeActivity"
+            android:exported="false" />
+
+        <!-- Main Activity (Mapa) -->
         <activity
             android:name=".MainActivity"
             android:exported="false" />
 
-        <!-- Segunda Actividad (evidencia) -->
+        <!-- ¡¡¡ EVIDENCIA ACTIVITY (AGREGADA) !!! -->
         <activity
             android:name=".EvidenciaActivity"
             android:exported="false" />
-        <activity
-            android:name=".HomeActivity"
-            android:exported="false" />
+
+        <!-- Registros Activity -->
         <activity
             android:name=".RegistrosActivity"
             android:exported="false" />
+
+        <!-- Calendario Activity -->
         <activity
             android:name=".CalendarioActivity"
+            android:exported="false" />
+
+        <!-- Perfil Activity -->
+        <activity
+            android:name=".PerfilActivity"
             android:exported="false" />
 
     </application>

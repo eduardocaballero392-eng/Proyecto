@@ -11,6 +11,7 @@ import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;  // ← IMPORTACIÓN AGREGADA
 
 public class EvidenciaActivity extends AppCompatActivity {
 
@@ -18,7 +19,8 @@ public class EvidenciaActivity extends AppCompatActivity {
     private static final int REQUEST_VIDEO_CAPTURE = 2;
 
     private EditText etDescripcion, etPesoEstimado;
-    private Button btnFoto, btnVideo, btnGuardar;
+    private CardView btnFoto, btnVideo;  // ← CAMBIADO DE Button A CardView
+    private Button btnGuardar, btnAgregarArchivo;
     private double latitud, longitud;
 
     @Override
@@ -26,18 +28,22 @@ public class EvidenciaActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_evidencia);
 
+        // Inicializar vistas
         etDescripcion = findViewById(R.id.etDescripcion);
         etPesoEstimado = findViewById(R.id.etPesoEstimado);
         btnFoto = findViewById(R.id.btnFoto);
         btnVideo = findViewById(R.id.btnVideo);
         btnGuardar = findViewById(R.id.btnGuardarRegistro);
+        btnAgregarArchivo = findViewById(R.id.btnAgregarArchivo);
 
+        // Recibir datos de MainActivity (ubicación)
         Intent intent = getIntent();
         if (intent != null) {
             latitud = intent.getDoubleExtra("latitud", 0);
             longitud = intent.getDoubleExtra("longitud", 0);
         }
 
+        // Configurar botones
         btnFoto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -49,6 +55,13 @@ public class EvidenciaActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 abrirCamaraVideo();
+            }
+        });
+
+        btnAgregarArchivo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(EvidenciaActivity.this, "Funcionalidad de agregar archivos próximamente", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -83,10 +96,10 @@ public class EvidenciaActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK) {
             if (requestCode == REQUEST_IMAGE_CAPTURE) {
-                Toast.makeText(this, "Foto tomada con éxito", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "📸 Foto tomada con éxito", Toast.LENGTH_SHORT).show();
             } else if (requestCode == REQUEST_VIDEO_CAPTURE) {
                 Uri videoUri = data.getData();
-                Toast.makeText(this, "Video grabado con éxito", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "🎥 Video grabado con éxito", Toast.LENGTH_SHORT).show();
             }
         }
     }
@@ -95,10 +108,26 @@ public class EvidenciaActivity extends AppCompatActivity {
         String descripcion = etDescripcion.getText().toString().trim();
         String pesoStr = etPesoEstimado.getText().toString().trim();
 
-        Toast.makeText(this, "✅ Registro guardado correctamente", Toast.LENGTH_SHORT).show();
+        // Validar que el peso no esté vacío
+        if (pesoStr.isEmpty()) {
+            etPesoEstimado.setError("Ingresa el peso estimado");
+            return;
+        }
 
-        // Ahora HomeActivity SÍ existe
+        // Validar que la descripción no esté vacía
+        if (descripcion.isEmpty()) {
+            etDescripcion.setError("Ingresa una descripción");
+            return;
+        }
+
+        // Aquí guardarías los datos en tu base de datos
+        // Por ahora solo mostramos un mensaje de éxito
+
+        Toast.makeText(this, " ¡Registro guardado correctamente!", Toast.LENGTH_LONG).show();
+
+        // Volver a la pantalla principal (HomeActivity)
         Intent intent = new Intent(EvidenciaActivity.this, HomeActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP); // Limpia la pila de actividades
         startActivity(intent);
         finish();
     }

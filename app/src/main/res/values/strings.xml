@@ -1,0 +1,21 @@
+<resources>
+    <string name="app_name">Proyecto</string>
+    <string name="registros_titulo">Registros</string>
+    <string name="resumen_por_mes">Resumen por mes</string>
+    <string name="registros_recientes">Registros recientes</string>
+    <string name="todo">Todo</string>
+    <string name="seleccionar_categoria">Seleccionar categoría</string>
+    <string name="seleccionar_mes">Seleccionar mes</string>
+    <string name="enero">Enero</string>
+    <string name="febrero">Febrero</string>
+    <string name="marzo">Marzo</string>
+    <string name="abril">Abril</string>
+    <string name="mayo">Mayo</string>
+    <string name="junio">Junio</string>
+    <string name="julio">Julio</string>
+    <string name="agosto">Agosto</string>
+    <string name="septiembre">Septiembre</string>
+    <string name="octubre">Octubre</string>
+    <string name="noviembre">Noviembre</string>
+    <string name="diciembre">Diciembre</string>
+</resources>

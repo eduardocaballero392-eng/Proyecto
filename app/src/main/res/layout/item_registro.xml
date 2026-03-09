@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="@drawable/card_border"
+    android:padding="16dp"
+    android:layout_marginBottom="8dp">
+
+    <!-- Tipo y peso -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:layout_marginBottom="8dp">
+
+        <TextView
+            android:id="@+id/tvTipo"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Mixto"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:textColor="#2E7D32"/>
+
+        <TextView
+            android:id="@+id/tvPeso"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="0 kg"
+            android:textSize="14sp"
+            android:textColor="#666666"
+            android:background="#F0F0F0"
+            android:paddingHorizontal="8dp"
+            android:paddingVertical="2dp"/>
+    </LinearLayout>
+
+    <!-- Ubicación -->
+    <TextView
+        android:id="@+id/tvUbicacion"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Puente Piedra, Lima, Lima Metropolitana, Li..."
+        android:textSize="14sp"
+        android:textColor="#666666"
+        android:layout_marginBottom="4dp"/>
+
+    <!-- Tiempo -->
+    <TextView
+        android:id="@+id/tvTiempo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Hace 2d"
+        android:textSize="12sp"
+        android:textColor="#999999"
+        android:layout_marginBottom="8dp"/>
+
+    <!-- Descripción (visible solo cuando hay) -->
+    <TextView
+        android:id="@+id/tvDescripcion"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Gran cantidad de folletos, volantes y publicidad política impresos en papel esparcidos por el suelo."
+        android:textSize="13sp"
+        android:textColor="#666666"
+        android:background="#F9F9F9"
+        android:padding="8dp"
+        android:visibility="gone"/>
+
+</LinearLayout>

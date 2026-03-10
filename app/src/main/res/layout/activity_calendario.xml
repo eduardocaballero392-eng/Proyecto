@@ -4,62 +4,63 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="#F5F5F5">
+    android:background="#F8F9FA">
 
-    <!-- Header con título y botón atrás -->
-    <LinearLayout
+    <!-- Toolbar Style Background -->
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:background="#673AB7"/>
+
+    <!-- Header Section -->
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:padding="16dp"
         android:background="#FFFFFF"
-        android:gravity="center_vertical">
+        android:padding="16dp">
 
         <ImageButton
             android:id="@+id/btnAtras"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
             android:src="@android:drawable/ic_menu_close_clear_cancel"
-            android:background="@android:color/transparent"
-            android:contentDescription="Botón para regresar"
-            android:scaleType="centerInside"/>
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="Cerrar"
+            app:tint="#444444"/>
 
         <TextView
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
+            android:layout_centerInParent="true"
             android:text="Calendario"
             android:textSize="20sp"
             android:textStyle="bold"
-            android:textColor="#000000"
-            android:gravity="center"/>
-    </LinearLayout>
+            android:textColor="#222222"/>
+    </RelativeLayout>
 
-    <!-- Selector de mes y año -->
+    <!-- Month Selector -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:gravity="center_vertical"
+        android:gravity="center"
         android:padding="16dp"
-        android:background="#FFFFFF"
-        android:layout_marginBottom="8dp">
+        android:background="#FFFFFF">
 
         <ImageButton
             android:id="@+id/btnMesAnterior"
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:src="@android:drawable/ic_media_previous"
-            android:background="@android:color/transparent"
-            android:contentDescription="Mes anterior"/>
+            android:background="?attr/selectableItemBackgroundBorderless"
+            app:tint="#CCCCCC"/>
 
         <TextView
             android:id="@+id/tvMesAnio"
-            android:layout_width="0dp"
+            android:layout_width="200dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Marzo 2026"
-            android:textSize="18sp"
+            android:text="marzo 2026"
+            android:textSize="20sp"
             android:textStyle="bold"
             android:textColor="#2E7D32"
             android:gravity="center"/>
@@ -69,115 +70,62 @@
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:src="@android:drawable/ic_media_next"
-            android:background="@android:color/transparent"
-            android:contentDescription="Mes siguiente"/>
+            android:background="?attr/selectableItemBackgroundBorderless"
+            app:tint="#CCCCCC"/>
     </LinearLayout>
 
-    <!-- Días de la semana -->
+    <!-- Week Days Header -->
     <GridLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:columnCount="7"
-        android:paddingHorizontal="8dp"
         android:background="#FFFFFF"
-        android:layout_marginBottom="4dp">
+        android:paddingVertical="8dp">
 
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="40dp"
-            android:layout_columnWeight="1"
-            android:text="Dom"
-            android:textColor="#666666"
-            android:gravity="center"
-            android:textStyle="bold"/>
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="40dp"
-            android:layout_columnWeight="1"
-            android:text="Lun"
-            android:textColor="#666666"
-            android:gravity="center"
-            android:textStyle="bold"/>
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="40dp"
-            android:layout_columnWeight="1"
-            android:text="Mar"
-            android:textColor="#666666"
-            android:gravity="center"
-            android:textStyle="bold"/>
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="40dp"
-            android:layout_columnWeight="1"
-            android:text="Mié"
-            android:textColor="#666666"
-            android:gravity="center"
-            android:textStyle="bold"/>
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="40dp"
-            android:layout_columnWeight="1"
-            android:text="Jue"
-            android:textColor="#666666"
-            android:gravity="center"
-            android:textStyle="bold"/>
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="40dp"
-            android:layout_columnWeight="1"
-            android:text="Vie"
-            android:textColor="#666666"
-            android:gravity="center"
-            android:textStyle="bold"/>
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="40dp"
-            android:layout_columnWeight="1"
-            android:text="Sáb"
-            android:textColor="#666666"
-            android:gravity="center"
-            android:textStyle="bold"/>
+        <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_columnWeight="1" android:text="Dom" android:gravity="center" android:textColor="#444444" android:textStyle="bold" android:textSize="14sp"/>
+        <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_columnWeight="1" android:text="Lun" android:gravity="center" android:textColor="#444444" android:textStyle="bold" android:textSize="14sp"/>
+        <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_columnWeight="1" android:text="Mar" android:gravity="center" android:textColor="#444444" android:textStyle="bold" android:textSize="14sp"/>
+        <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_columnWeight="1" android:text="Mié" android:gravity="center" android:textColor="#444444" android:textStyle="bold" android:textSize="14sp"/>
+        <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_columnWeight="1" android:text="Jue" android:gravity="center" android:textColor="#444444" android:textStyle="bold" android:textSize="14sp"/>
+        <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_columnWeight="1" android:text="Vie" android:gravity="center" android:textColor="#444444" android:textStyle="bold" android:textSize="14sp"/>
+        <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_columnWeight="1" android:text="Sáb" android:gravity="center" android:textColor="#444444" android:textStyle="bold" android:textSize="14sp"/>
     </GridLayout>
 
-    <!-- Grid de días del mes -->
+    <!-- Calendar Grid -->
     <GridLayout
         android:id="@+id/gridCalendario"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:columnCount="7"
-        android:paddingHorizontal="8dp"
         android:background="#FFFFFF"
-        android:layout_marginBottom="16dp"/>
+        android:paddingBottom="16dp"/>
 
-    <!-- Contador de registros -->
-    <TextView
-        android:id="@+id/tvContadorRegistros"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="3 registros"
-        android:textSize="14sp"
-        android:textColor="#666666"
-        android:paddingHorizontal="16dp"
-        android:layout_marginBottom="8dp"/>
-
-    <!-- ScrollView para los registros del día -->
-    <ScrollView
+    <!-- Content Section -->
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:paddingHorizontal="12dp">
+        android:orientation="vertical"
+        android:padding="16dp"
+        android:background="#F5F5F5">
 
-        <LinearLayout
-            android:id="@+id/layoutRegistros"
-            android:layout_width="match_parent"
+        <TextView
+            android:id="@+id/tvContadorRegistros"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="vertical"/>
-    </ScrollView>
+            android:text="2 registros"
+            android:textColor="#888888"
+            android:textSize="14sp"
+            android:layout_marginBottom="12dp"/>
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <LinearLayout
+                android:id="@+id/layoutRegistros"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"/>
+        </ScrollView>
+    </LinearLayout>
 
 </LinearLayout>

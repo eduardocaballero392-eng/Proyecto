@@ -1,9 +1,8 @@
 package com.pen.proyecto;
 
-<<<<<<< HEAD
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
-=======
->>>>>>> 80f27eddca501b840cd41b7324c671f4c7462bf5
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -16,7 +15,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-<<<<<<< HEAD
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.data.BarData;
@@ -25,192 +23,201 @@ import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
 
 import java.util.ArrayList;
-import java.util.Calendar;
-=======
-import java.util.ArrayList;
->>>>>>> 80f27eddca501b840cd41b7324c671f4c7462bf5
 import java.util.List;
+import java.util.Locale;
 
 public class RegistrosActivity extends AppCompatActivity {
 
+    // UI Elements
     private RecyclerView recyclerView;
     private RegistrosAdapter adapter;
     private ImageButton btnAtras;
-<<<<<<< HEAD
     private BarChart barChart;
-=======
->>>>>>> 80f27eddca501b840cd41b7324c671f4c7462bf5
-
-    // Spinners para filtros
     private Spinner spinnerCategoria, spinnerMes;
-
-<<<<<<< HEAD
-=======
-    // TextViews para estadísticas
     private TextView tvTotalRegistros, tvPesoTotal, tvPesoMes;
 
->>>>>>> 80f27eddca501b840cd41b7324c671f4c7462bf5
-    // Datos completos
+    // Database
+    private MySQLiteHelper dbHelper;
+    private int loggedUserId;
+
+    // Data
     private List<RegistroItem> todosLosRegistros;
     private List<RegistroItem> registrosFiltrados;
 
-    // Arrays para filtros
-<<<<<<< HEAD
-    private String[] categorias = {"Todo", "Papel/Cartón", "Plástico", "Vidrio", "Orgánico", "Mixto"};
-    private String[] meses = {"Todo", "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio",
-            "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"};
-
-    // Filtros seleccionados
-    private String categoriaSeleccionada = "Todo";
-    private String mesSeleccionado = "Todo";
-=======
-    private String[] categorias = {"Todos", "Papel/Cartón", "Plástico", "Vidrio", "Orgánico", "Mixto"};
+    // Filter arrays
+    private String[] categorias = {"Todos", "Papel", "Cartón", "Plástico", "Vidrio", "Orgánico", "Mixto"};
     private String[] meses = {"Todos", "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio",
             "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"};
 
-    // Filtros seleccionados
+    // Selected filters
     private String categoriaSeleccionada = "Todos";
     private String mesSeleccionado = "Todos";
->>>>>>> 80f27eddca501b840cd41b7324c671f4c7462bf5
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registros);
 
-        // Inicializar vistas
+        // Initialize database
+        dbHelper = new MySQLiteHelper(this);
+        loggedUserId = getIntent().getIntExtra("USER_ID", -1);
+
+        // Initialize views
+        inicializarVistas();
+        
+        // Configure spinners
+        configurarSpinners();
+        
+        // Load data
+        cargarRegistrosDesdeBD();
+        aplicarFiltros();
+
+        // Back button
+        btnAtras.setOnClickListener(v -> finish());
+    }
+
+    private void inicializarVistas() {
         recyclerView = findViewById(R.id.recyclerView);
         btnAtras = findViewById(R.id.btnAtras);
-<<<<<<< HEAD
         barChart = findViewById(R.id.barChart);
         spinnerCategoria = findViewById(R.id.spinnerCategoria);
         spinnerMes = findViewById(R.id.spinnerMes);
-
-=======
-
-        // Spinners
-        spinnerCategoria = findViewById(R.id.spinnerCategoria);
-        spinnerMes = findViewById(R.id.spinnerMes);
-
-        // Estadísticas
         tvTotalRegistros = findViewById(R.id.tvTotalRegistros);
         tvPesoTotal = findViewById(R.id.tvPesoTotal);
         tvPesoMes = findViewById(R.id.tvPesoMes);
 
->>>>>>> 80f27eddca501b840cd41b7324c671f4c7462bf5
-        // Configurar RecyclerView
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-
-        // Configurar Spinners
-        configurarSpinners();
-
-        // Cargar datos de ejemplo
-        cargarRegistrosEjemplo();
-
-        // Aplicar filtros iniciales
-        aplicarFiltros();
-
-        // Botón atrás
-        btnAtras.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
     }
 
     private void configurarSpinners() {
-        // Adaptador para spinner de categorías
-        ArrayAdapter<String> adapterCategoria = new ArrayAdapter<>(
-                this, android.R.layout.simple_spinner_item, categorias);
-        adapterCategoria.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinnerCategoria.setAdapter(adapterCategoria);
+        // Categoría Spinner
+        ArrayAdapter<String> adapterCat = new ArrayAdapter<>(this, 
+            android.R.layout.simple_spinner_item, categorias);
+        adapterCat.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinnerCategoria.setAdapter(adapterCat);
 
-        // Adaptador para spinner de meses
-        ArrayAdapter<String> adapterMes = new ArrayAdapter<>(
-                this, android.R.layout.simple_spinner_item, meses);
+        // Mes Spinner
+        ArrayAdapter<String> adapterMes = new ArrayAdapter<>(this, 
+            android.R.layout.simple_spinner_item, meses);
         adapterMes.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerMes.setAdapter(adapterMes);
 
-        // Listeners para cambios en los spinners
-        spinnerCategoria.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        // Listener para ambos spinners
+        AdapterView.OnItemSelectedListener listener = new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                categoriaSeleccionada = categorias[position];
+                categoriaSeleccionada = spinnerCategoria.getSelectedItem().toString();
+                mesSeleccionado = spinnerMes.getSelectedItem().toString();
                 aplicarFiltros();
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {}
-        });
+        };
 
-        spinnerMes.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                mesSeleccionado = meses[position];
-                aplicarFiltros();
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {}
-        });
+        spinnerCategoria.setOnItemSelectedListener(listener);
+        spinnerMes.setOnItemSelectedListener(listener);
     }
 
-    private void cargarRegistrosEjemplo() {
+    private void cargarRegistrosDesdeBD() {
         todosLosRegistros = new ArrayList<>();
+        
+        // Si no hay usuario válido, salir
+        if (loggedUserId == -1) {
+            return;
+        }
 
-        // Registros con fechas simuladas (meses)
-        // Enero
-        todosLosRegistros.add(new RegistroItem("Papel/Cartón", "Puente Piedra", "2.5 kg", "Enero", "Folletos"));
-        todosLosRegistros.add(new RegistroItem("Plástico", "Av. San Juan", "1.8 kg", "Enero", "Botellas"));
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+        Cursor cursor = null;
 
-        // Febrero
-        todosLosRegistros.add(new RegistroItem("Papel/Cartón", "Mercado", "3.2 kg", "Febrero", "Cajas"));
-        todosLosRegistros.add(new RegistroItem("Vidrio", "Restaurante", "4.0 kg", "Febrero", "Botellas"));
-        todosLosRegistros.add(new RegistroItem("Orgánico", "Mercado", "5.0 kg", "Febrero", "Residuos"));
+        try {
+            cursor = db.query(
+                MySQLiteHelper.TABLE_REGISTROS, 
+                null, 
+                MySQLiteHelper.COLUMN_REG_EMPLEADO_ID + " = ?", 
+                new String[]{String.valueOf(loggedUserId)}, 
+                null, 
+                null, 
+                MySQLiteHelper.COLUMN_REG_FECHA + " DESC"
+            );
 
-        // Marzo
-        todosLosRegistros.add(new RegistroItem("Plástico", "Parque", "2.2 kg", "Marzo", "Envases"));
-        todosLosRegistros.add(new RegistroItem("Mixto", "Esquina", "3.5 kg", "Marzo", "Variado"));
-        todosLosRegistros.add(new RegistroItem("Papel/Cartón", "Oficina", "1.5 kg", "Marzo", "Papel"));
+            if (cursor.moveToFirst()) {
+                do {
+                    String tipo = cursor.getString(
+                        cursor.getColumnIndexOrThrow(MySQLiteHelper.COLUMN_REG_DESCRIPCION)
+                    );
+                    double peso = cursor.getDouble(
+                        cursor.getColumnIndexOrThrow(MySQLiteHelper.COLUMN_REG_PESO)
+                    );
+                    String fecha = cursor.getString(
+                        cursor.getColumnIndexOrThrow(MySQLiteHelper.COLUMN_REG_FECHA)
+                    );
+                    String hora = cursor.getString(
+                        cursor.getColumnIndexOrThrow(MySQLiteHelper.COLUMN_REG_HORA)
+                    );
 
-        // Abril
-        todosLosRegistros.add(new RegistroItem("Papel/Cartón", "Colegio", "4.2 kg", "Abril", "Libros"));
-        todosLosRegistros.add(new RegistroItem("Plástico", "Tienda", "2.8 kg", "Abril", "Botellas"));
-        todosLosRegistros.add(new RegistroItem("Orgánico", "Restaurante", "3.5 kg", "Abril", "Comida"));
-        todosLosRegistros.add(new RegistroItem("Vidrio", "Bar", "2.0 kg", "Abril", "Botellas"));
+                    String mesNombre = obtenerNombreMesDesdeFecha(fecha);
+                    
+                    todosLosRegistros.add(new RegistroItem(
+                        "Residuo", 
+                        tipo, 
+                        peso, 
+                        mesNombre, 
+                        fecha, 
+                        hora
+                    ));
+                    
+                } while (cursor.moveToNext());
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (cursor != null) cursor.close();
+            db.close();
+        }
+    }
 
-        // Mayo
-        todosLosRegistros.add(new RegistroItem("Papel/Cartón", "Empresa", "3.8 kg", "Mayo", "Documentos"));
-        todosLosRegistros.add(new RegistroItem("Plástico", "Supermercado", "4.5 kg", "Mayo", "Envases"));
+    private String obtenerNombreMesDesdeFecha(String fecha) {
+        if (fecha == null || !fecha.contains("-")) return "Todos";
+        try {
+            String[] parts = fecha.split("-");
+            int mesInt = Integer.parseInt(parts[1]);
+            if (mesInt >= 1 && mesInt <= 12) {
+                return meses[mesInt];
+            }
+        } catch (NumberFormatException | ArrayIndexOutOfBoundsException e) {
+            e.printStackTrace();
+        }
+        return "Todos";
     }
 
     private void aplicarFiltros() {
         registrosFiltrados = new ArrayList<>();
-<<<<<<< HEAD
-
-        // Aplicar filtros a los datos
-        for (RegistroItem item : todosLosRegistros) {
-            boolean cumpleCategoria = categoriaSeleccionada.equals("Todo") ||
-                    item.getTipo().equals(categoriaSeleccionada);
-            boolean cumpleMes = mesSeleccionado.equals("Todo") ||
-=======
         float pesoTotal = 0;
         float pesoMes = 0;
 
-        // Aplicar filtros a los datos
         for (RegistroItem item : todosLosRegistros) {
             boolean cumpleCategoria = categoriaSeleccionada.equals("Todos") ||
-                    item.getTipo().equals(categoriaSeleccionada);
+                    item.getMaterial().equalsIgnoreCase(categoriaSeleccionada);
             boolean cumpleMes = mesSeleccionado.equals("Todos") ||
->>>>>>> 80f27eddca501b840cd41b7324c671f4c7462bf5
                     item.getMes().equals(mesSeleccionado);
 
             if (cumpleCategoria && cumpleMes) {
                 registrosFiltrados.add(item);
-<<<<<<< HEAD
+
+                // Calcular pesos para estadísticas
+                pesoTotal += item.getPeso();
+
+                if (item.getMes().equals(mesSeleccionado) || mesSeleccionado.equals("Todos")) {
+                    pesoMes += item.getPeso();
+                }
             }
         }
+
+        // Actualizar estadísticas
+        tvTotalRegistros.setText(String.valueOf(registrosFiltrados.size()));
+        tvPesoTotal.setText(String.format(Locale.getDefault(), "%.1f kg", pesoTotal));
+        tvPesoMes.setText(String.format(Locale.getDefault(), "%.1f kg", pesoMes));
 
         // Actualizar RecyclerView
         adapter = new RegistrosAdapter(registrosFiltrados);
@@ -221,158 +228,90 @@ public class RegistrosActivity extends AppCompatActivity {
     }
 
     private void actualizarGrafico() {
-        // Si no hay registros filtrados, mostrar gráfico vacío
         if (registrosFiltrados.isEmpty()) {
             barChart.clear();
             barChart.invalidate();
             return;
         }
 
-        // Contar registros por mes según los filtros actuales
-        int[] registrosPorMes = new int[12]; // 0=Enero, 11=Diciembre
-
+        // Contar registros por mes
+        int[] registrosPorMes = new int[12];
         for (RegistroItem item : registrosFiltrados) {
-            int indiceMes = obtenerIndiceMes(item.getMes());
-            if (indiceMes >= 0) {
-                registrosPorMes[indiceMes]++;
+            int idx = obtenerIndiceMes(item.getMes());
+            if (idx >= 0) {
+                registrosPorMes[idx]++;
             }
         }
 
-        // Crear entradas para el gráfico (solo meses con datos)
+        // Preparar datos para el gráfico
         ArrayList<BarEntry> entries = new ArrayList<>();
-        ArrayList<String> mesesConDatos = new ArrayList<>();
-        String[] nombresMeses = {"Ene", "Feb", "Mar", "Abr", "May", "Jun",
-                "Jul", "Ago", "Sep", "Oct", "Nov", "Dic"};
+        ArrayList<String> labels = new ArrayList<>();
+        String[] shortMeses = {"Ene", "Feb", "Mar", "Abr", "May", "Jun", 
+                              "Jul", "Ago", "Sep", "Oct", "Nov", "Dic"};
 
         for (int i = 0; i < 12; i++) {
-            if (registrosPorMes[i] > 0 || mesSeleccionado.equals("Todo")) {
-                // Si el mes está seleccionado o es "Todo", mostrar todos los meses con datos
-                if (mesSeleccionado.equals("Todo") && registrosPorMes[i] > 0) {
-                    entries.add(new BarEntry(entries.size(), registrosPorMes[i]));
-                    mesesConDatos.add(nombresMeses[i]);
-                } else if (!mesSeleccionado.equals("Todo") && i == obtenerIndiceMes(mesSeleccionado)) {
-                    // Si hay un mes específico seleccionado, mostrar solo ese mes
-                    entries.add(new BarEntry(0, registrosPorMes[i]));
-                    mesesConDatos.add(nombresMeses[i]);
+            if (registrosPorMes[i] > 0 || !mesSeleccionado.equals("Todos")) {
+                if (mesSeleccionado.equals("Todos") || i == obtenerIndiceMes(mesSeleccionado)) {
+                    entries.add(new BarEntry(labels.size(), registrosPorMes[i]));
+                    labels.add(shortMeses[i]);
                 }
             }
         }
 
-        // Si no hay datos para mostrar
-        if (entries.isEmpty()) {
-            barChart.clear();
-            barChart.invalidate();
-            return;
-        }
-
-        // Configurar DataSet
-        BarDataSet dataSet = new BarDataSet(entries, "Registros");
-        dataSet.setColors(
-                Color.parseColor("#2E7D32"),  // Verde
-                Color.parseColor("#2196F3"),  // Azul
-                Color.parseColor("#9C27B0"),  // Morado
-                Color.parseColor("#FF9800"),  // Naranja
-                Color.parseColor("#757575"),  // Gris
-                Color.parseColor("#F44336")   // Rojo
-        );
-        dataSet.setValueTextSize(12f);
-
-        // Configurar datos del gráfico
+        // Configurar dataset
+        BarDataSet dataSet = new BarDataSet(entries, "Registros por mes");
+        dataSet.setColor(Color.parseColor("#2E7D32"));
+        dataSet.setValueTextColor(Color.BLACK);
+        
         BarData barData = new BarData(dataSet);
         barData.setBarWidth(0.5f);
-
+        
         barChart.setData(barData);
-        barChart.setFitBars(true);
-        barChart.setDrawValueAboveBar(true);
+        barChart.getXAxis().setValueFormatter(new IndexAxisValueFormatter(labels));
+        barChart.getXAxis().setPosition(XAxis.XAxisPosition.BOTTOM);
+        barChart.getXAxis().setGranularity(1f);
         barChart.getDescription().setEnabled(false);
-        barChart.getLegend().setEnabled(false);
-
-        // Configurar eje X con los meses correspondientes
-        XAxis xAxis = barChart.getXAxis();
-        xAxis.setValueFormatter(new IndexAxisValueFormatter(mesesConDatos));
-        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
-        xAxis.setGranularity(1f);
-        xAxis.setDrawGridLines(false);
-
-        // Configurar eje Y
-        barChart.getAxisLeft().setAxisMinimum(0f);
-        barChart.getAxisRight().setEnabled(false);
-
-        // Animar y actualizar
-        barChart.animateY(800);
+        barChart.animateY(1000);
         barChart.invalidate();
     }
 
     private int obtenerIndiceMes(String nombreMes) {
-        switch (nombreMes) {
-            case "Enero": return 0;
-            case "Febrero": return 1;
-            case "Marzo": return 2;
-            case "Abril": return 3;
-            case "Mayo": return 4;
-            case "Junio": return 5;
-            case "Julio": return 6;
-            case "Agosto": return 7;
-            case "Septiembre": return 8;
-            case "Octubre": return 9;
-            case "Noviembre": return 10;
-            case "Diciembre": return 11;
-            default: return -1;
-        }
-=======
-
-                // Calcular pesos
-                float peso = Float.parseFloat(item.getPeso().replace(" kg", ""));
-                pesoTotal += peso;
-
-                if (item.getMes().equals(mesSeleccionado) || mesSeleccionado.equals("Todos")) {
-                    pesoMes += peso;
-                }
+        for (int i = 1; i < meses.length; i++) {
+            if (meses[i].equals(nombreMes)) {
+                return i - 1; // Convertir a índice 0-11
             }
         }
-
-        // Actualizar estadísticas
-        tvTotalRegistros.setText(String.valueOf(registrosFiltrados.size()));
-        tvPesoTotal.setText(String.format("%.1f kg", pesoTotal));
-
-        if (mesSeleccionado.equals("Todos")) {
-            tvPesoMes.setText(String.format("%.1f kg", pesoMes));
-        } else {
-            tvPesoMes.setText(String.format("%.1f kg", pesoMes));
-        }
-
-        // Actualizar RecyclerView
-        adapter = new RegistrosAdapter(registrosFiltrados);
-        recyclerView.setAdapter(adapter);
->>>>>>> 80f27eddca501b840cd41b7324c671f4c7462bf5
+        return -1;
     }
 
-    // Clase modelo para los registros
+    // Modelo de datos
     public static class RegistroItem {
-        private String tipo;
-        private String ubicacion;
-        private String peso;
+        private String titulo;
+        private String material;
+        private double peso;
         private String mes;
-        private String descripcion;
+        private String fecha;
+        private String hora;
 
-        public RegistroItem(String tipo, String ubicacion, String peso, String mes, String descripcion) {
-            this.tipo = tipo;
-            this.ubicacion = ubicacion;
+        public RegistroItem(String titulo, String material, double peso, String mes, String fecha, String hora) {
+            this.titulo = titulo;
+            this.material = material;
             this.peso = peso;
             this.mes = mes;
-            this.descripcion = descripcion;
+            this.fecha = fecha;
+            this.hora = hora;
         }
 
-        public String getTipo() { return tipo; }
-        public String getUbicacion() { return ubicacion; }
-        public String getPeso() { return peso; }
+        public String getTitulo() { return titulo; }
+        public String getMaterial() { return material; }
+        public double getPeso() { return peso; }
+        public String getPesoStr() { return String.format(Locale.getDefault(), "%.1f kg", peso); }
         public String getMes() { return mes; }
-        public String getDescripcion() { return descripcion; }
+        public String getFechaHora() { return fecha + " " + hora; }
     }
 
-    // Adaptador para el RecyclerView
+    // Adaptador del RecyclerView
     public class RegistrosAdapter extends RecyclerView.Adapter<RegistrosAdapter.ViewHolder> {
-
         private List<RegistroItem> registros;
 
         public RegistrosAdapter(List<RegistroItem> registros) {
@@ -381,41 +320,32 @@ public class RegistrosActivity extends AppCompatActivity {
 
         @Override
         public ViewHolder onCreateViewHolder(android.view.ViewGroup parent, int viewType) {
-            android.view.View view = getLayoutInflater().inflate(R.layout.item_registro, parent, false);
+            View view = getLayoutInflater().inflate(R.layout.item_registro_calendario, parent, false);
             return new ViewHolder(view);
         }
 
         @Override
         public void onBindViewHolder(ViewHolder holder, int position) {
             RegistroItem item = registros.get(position);
-
-            holder.tvTipo.setText(item.getTipo());
-            holder.tvUbicacion.setText(item.getUbicacion());
-            holder.tvPeso.setText(item.getPeso());
-            holder.tvTiempo.setText(item.getMes());
-
-            if (item.getDescripcion() == null || item.getDescripcion().isEmpty()) {
-                holder.tvDescripcion.setVisibility(View.GONE);
-            } else {
-                holder.tvDescripcion.setVisibility(View.VISIBLE);
-                holder.tvDescripcion.setText(item.getDescripcion());
-            }
+            holder.tvTipo.setText(item.getTitulo());
+            holder.tvPeso.setText(item.getPesoStr());
+            holder.tvDescripcion.setText(item.getMaterial());
+            holder.tvHoraFoto.setText(item.getFechaHora());
         }
 
         @Override
-        public int getItemCount() {
-            return registros.size();
+        public int getItemCount() { 
+            return registros != null ? registros.size() : 0; 
         }
 
         public class ViewHolder extends RecyclerView.ViewHolder {
-            TextView tvTipo, tvUbicacion, tvPeso, tvTiempo, tvDescripcion;
+            TextView tvTipo, tvPeso, tvHoraFoto, tvDescripcion;
 
-            public ViewHolder(android.view.View itemView) {
+            public ViewHolder(View itemView) {
                 super(itemView);
                 tvTipo = itemView.findViewById(R.id.tvTipo);
-                tvUbicacion = itemView.findViewById(R.id.tvUbicacion);
                 tvPeso = itemView.findViewById(R.id.tvPeso);
-                tvTiempo = itemView.findViewById(R.id.tvTiempo);
+                tvHoraFoto = itemView.findViewById(R.id.tvHoraFoto);
                 tvDescripcion = itemView.findViewById(R.id.tvDescripcion);
             }
         }

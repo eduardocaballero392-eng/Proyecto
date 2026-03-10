@@ -1,5 +1,7 @@
 package com.pen.proyecto;
 
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.Gravity;
@@ -10,7 +12,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.ContextCompat;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -27,16 +28,18 @@ public class CalendarioActivity extends AppCompatActivity {
 
     private Calendar calendarioActual;
     private SimpleDateFormat formatoMes = new SimpleDateFormat("MMMM yyyy", new Locale("es", "ES"));
-
-    // Datos de ejemplo
-    private List<RegistroCalendario> registrosEjemplo;
+    private MySQLiteHelper dbHelper;
+    private List<RegistroBD> registrosBD;
+    private int loggedUserId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_calendario);
 
-        // Inicializar vistas
+        dbHelper = new MySQLiteHelper(this);
+        loggedUserId = getIntent().getIntExtra("USER_ID", -1);
+
         btnAtras = findViewById(R.id.btnAtras);
         btnMesAnterior = findViewById(R.id.btnMesAnterior);
         btnMesSiguiente = findViewById(R.id.btnMesSiguiente);
@@ -45,249 +48,120 @@ public class CalendarioActivity extends AppCompatActivity {
         gridCalendario = findViewById(R.id.gridCalendario);
         layoutRegistros = findViewById(R.id.layoutRegistros);
 
-        // Inicializar calendario
         calendarioActual = Calendar.getInstance();
-        calendarioActual.set(2026, Calendar.MARCH, 1); // Marzo 2026 como ejemplo
+        
+        cargarRegistrosDesdeBD();
 
-        // Cargar datos de ejemplo
-        cargarRegistrosEjemplo();
-
-        // Configurar listeners
-        btnAtras.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
+        btnAtras.setOnClickListener(v -> finish());
+        btnMesAnterior.setOnClickListener(v -> {
+            calendarioActual.add(Calendar.MONTH, -1);
+            actualizarCalendario();
+        });
+        btnMesSiguiente.setOnClickListener(v -> {
+            calendarioActual.add(Calendar.MONTH, 1);
+            actualizarCalendario();
         });
 
-        btnMesAnterior.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                calendarioActual.add(Calendar.MONTH, -1);
-                actualizarCalendario();
-            }
-        });
-
-        btnMesSiguiente.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                calendarioActual.add(Calendar.MONTH, 1);
-                actualizarCalendario();
-            }
-        });
-
-        // Mostrar calendario inicial
         actualizarCalendario();
     }
 
-    private void cargarRegistrosEjemplo() {
-        registrosEjemplo = new ArrayList<>();
+    private void cargarRegistrosDesdeBD() {
+        registrosBD = new ArrayList<>();
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+        
+        // Cargar solo registros del usuario logueado
+        Cursor cursor = db.query(MySQLiteHelper.TABLE_REGISTROS, null, 
+                MySQLiteHelper.COLUMN_REG_EMPLEADO_ID + " = ?", 
+                new String[]{String.valueOf(loggedUserId)}, null, null, null);
 
-        // Registro 1 - 15 de marzo
-        registrosEjemplo.add(new RegistroCalendario(
-                2026, 2, 15, // Marzo (0=Ene, 1=Feb, 2=Mar)
-                "Mixto",
-                "0 kg",
-                "Puente Piedra, Lima, Lima Metropolitana, Lima, 15118, Perú",
-                "03:28 p. m. - 1 foto",
-                "",
-                ""
-        ));
+        if (cursor.moveToFirst()) {
+            do {
+                String fecha = cursor.getString(cursor.getColumnIndexOrThrow(MySQLiteHelper.COLUMN_REG_FECHA));
+                String tipo = cursor.getString(cursor.getColumnIndexOrThrow(MySQLiteHelper.COLUMN_REG_DESCRIPCION));
+                double peso = cursor.getDouble(cursor.getColumnIndexOrThrow(MySQLiteHelper.COLUMN_REG_PESO));
+                String hora = cursor.getString(cursor.getColumnIndexOrThrow(MySQLiteHelper.COLUMN_REG_HORA));
+                
+                String[] parts = fecha.split("-");
+                int ano = Integer.parseInt(parts[0]);
+                int mes = Integer.parseInt(parts[1]) - 1;
+                int dia = Integer.parseInt(parts[2]);
 
-        // Registro 2 - 15 de marzo
-        registrosEjemplo.add(new RegistroCalendario(
-                2026, 2, 15,
-                "Papel/Cartón",
-                "0 kg",
-                "Puente Piedra, Lima, Lima Metropolitana, Lima, 15118, Perú",
-                "",
-                "Gran cantidad de folletos, volantes y publicidad política impresos en papel esparcidos por el suelo.",
-                "Recoger y depositar en el contenedor azul para reciclaje. Asegurarse de que el papel no esté excesivamente contaminado con materia orgánica humedad para facilitar el proceso."
-        ));
-
-        // Registro 3 - 20 de marzo
-        registrosEjemplo.add(new RegistroCalendario(
-                2026, 2, 20,
-                "Plástico",
-                "2.5 kg",
-                "Av. San Juan, Puente Piedra",
-                "10:15 a. m. - 2 fotos",
-                "Botellas PET y envases",
-                ""
-        ));
-
-        // Registro 4 - 20 de marzo
-        registrosEjemplo.add(new RegistroCalendario(
-                2026, 2, 20,
-                "Vidrio",
-                "3.0 kg",
-                "Restaurante El Buen Sabor",
-                "12:30 p. m. - 1 foto",
-                "Botellas de vidrio",
-                ""
-        ));
-
-        // Registro 5 - 25 de marzo
-        registrosEjemplo.add(new RegistroCalendario(
-                2026, 2, 25,
-                "Orgánico",
-                "4.2 kg",
-                "Mercado Central",
-                "09:45 a. m. - 3 fotos",
-                "Residuos de frutas y verduras",
-                ""
-        ));
+                registrosBD.add(new RegistroBD(ano, mes, dia, tipo, peso + " kg", hora));
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
     }
 
     private void actualizarCalendario() {
-        // Actualizar título del mes
-        tvMesAnio.setText(formatoMes.format(calendarioActual.getTime()));
-
-        // Limpiar grid
+        tvMesAnio.setText(formatoMes.format(calendarioActual.getTime()).toLowerCase());
         gridCalendario.removeAllViews();
 
-        // Obtener información del mes
         int año = calendarioActual.get(Calendar.YEAR);
         int mes = calendarioActual.get(Calendar.MONTH);
 
         Calendar temp = Calendar.getInstance();
         temp.set(año, mes, 1);
-        int primerDiaSemana = temp.get(Calendar.DAY_OF_WEEK); // 1=domingo
+        int primerDiaSemana = temp.get(Calendar.DAY_OF_WEEK);
         int diasEnMes = temp.getActualMaximum(Calendar.DAY_OF_MONTH);
-
-        // Ajustar: en nuestra grid, domingo es posición 0
         int primerDia = (primerDiaSemana == Calendar.SUNDAY) ? 0 : primerDiaSemana - 1;
 
-        // Crear celdas vacías para días anteriores
-        GridLayout.LayoutParams params = new GridLayout.LayoutParams();
-        params.width = 0;
-        params.height = 120;
-        params.columnSpec = GridLayout.spec(GridLayout.UNDEFINED, 1f);
-        params.rowSpec = GridLayout.spec(GridLayout.UNDEFINED);
-
         for (int i = 0; i < primerDia; i++) {
-            TextView celdaVacia = new TextView(this);
-            celdaVacia.setLayoutParams(params);
-            celdaVacia.setGravity(Gravity.CENTER);
-            gridCalendario.addView(celdaVacia);
+            gridCalendario.addView(new TextView(this));
         }
 
-        // Crear celdas para cada día del mes
         for (int dia = 1; dia <= diasEnMes; dia++) {
             TextView celdaDia = new TextView(this);
-            GridLayout.LayoutParams paramsDia = new GridLayout.LayoutParams();
-            paramsDia.width = 0;
-            paramsDia.height = 120;
-            paramsDia.columnSpec = GridLayout.spec(GridLayout.UNDEFINED, 1f);
-            paramsDia.rowSpec = GridLayout.spec(GridLayout.UNDEFINED);
-            celdaDia.setLayoutParams(paramsDia);
-
+            GridLayout.LayoutParams params = new GridLayout.LayoutParams();
+            params.width = 0;
+            params.height = 120;
+            params.columnSpec = GridLayout.spec(GridLayout.UNDEFINED, 1f);
+            celdaDia.setLayoutParams(params);
             celdaDia.setGravity(Gravity.CENTER);
             celdaDia.setText(String.valueOf(dia));
-            celdaDia.setTextSize(16);
-            celdaDia.setPadding(8, 8, 8, 8);
 
-            // Verificar si hay registros para este día
-            boolean tieneRegistros = tieneRegistrosEnFecha(año, mes, dia);
-            if (tieneRegistros) {
-                celdaDia.setBackground(ContextCompat.getDrawable(this, R.drawable.dia_con_registro));
+            if (tieneRegistrosEnFecha(año, mes, dia)) {
+                celdaDia.setBackgroundResource(R.drawable.circle_green); // Círculo verde para días con registros
                 celdaDia.setTextColor(Color.WHITE);
             } else {
-                celdaDia.setBackground(ContextCompat.getDrawable(this, R.drawable.dia_sin_registro));
                 celdaDia.setTextColor(Color.BLACK);
             }
 
-            final int diaSeleccionado = dia;
-            celdaDia.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    mostrarRegistrosDelDia(año, mes, diaSeleccionado);
-                }
-            });
-
+            final int d = dia;
+            celdaDia.setOnClickListener(v -> mostrarRegistrosDelDia(año, mes, d));
             gridCalendario.addView(celdaDia);
         }
     }
 
     private boolean tieneRegistrosEnFecha(int año, int mes, int dia) {
-        for (RegistroCalendario registro : registrosEjemplo) {
-            if (registro.ano == año && registro.mes == mes && registro.dia == dia) {
-                return true;
-            }
+        for (RegistroBD r : registrosBD) {
+            if (r.ano == año && r.mes == mes && r.dia == dia) return true;
         }
         return false;
     }
 
     private void mostrarRegistrosDelDia(int año, int mes, int dia) {
-        // Limpiar registros anteriores
         layoutRegistros.removeAllViews();
-
-        List<RegistroCalendario> registrosDelDia = new ArrayList<>();
-        for (RegistroCalendario registro : registrosEjemplo) {
-            if (registro.ano == año && registro.mes == mes && registro.dia == dia) {
-                registrosDelDia.add(registro);
-            }
+        List<RegistroBD> delDia = new ArrayList<>();
+        for (RegistroBD r : registrosBD) {
+            if (r.ano == año && r.mes == mes && r.dia == dia) delDia.add(r);
         }
 
-        // Actualizar contador
-        tvContadorRegistros.setText(registrosDelDia.size() + " registros");
-
-        // Mostrar cada registro
-        for (RegistroCalendario registro : registrosDelDia) {
-            View itemView = getLayoutInflater().inflate(R.layout.item_registro_calendario, null);
-
-            TextView tvTipo = itemView.findViewById(R.id.tvTipo);
-            TextView tvPeso = itemView.findViewById(R.id.tvPeso);
-            TextView tvUbicacion = itemView.findViewById(R.id.tvUbicacion);
-            TextView tvHoraFoto = itemView.findViewById(R.id.tvHoraFoto);
-            TextView tvDescripcion = itemView.findViewById(R.id.tvDescripcion);
-            TextView tvRecomendacion = itemView.findViewById(R.id.tvRecomendacion);
-
-            tvTipo.setText(registro.tipo);
-            tvPeso.setText(registro.peso);
-            tvUbicacion.setText(registro.ubicacion);
-
-            if (registro.horaFoto.isEmpty()) {
-                tvHoraFoto.setVisibility(View.GONE);
-            } else {
-                tvHoraFoto.setVisibility(View.VISIBLE);
-                tvHoraFoto.setText(registro.horaFoto);
-            }
-
-            if (registro.descripcion.isEmpty()) {
-                tvDescripcion.setVisibility(View.GONE);
-            } else {
-                tvDescripcion.setVisibility(View.VISIBLE);
-                tvDescripcion.setText(registro.descripcion);
-            }
-
-            if (registro.recomendacion.isEmpty()) {
-                tvRecomendacion.setVisibility(View.GONE);
-            } else {
-                tvRecomendacion.setVisibility(View.VISIBLE);
-                tvRecomendacion.setText(registro.recomendacion);
-            }
-
-            layoutRegistros.addView(itemView);
+        tvContadorRegistros.setText(delDia.size() + " registros");
+        for (RegistroBD r : delDia) {
+            View v = getLayoutInflater().inflate(R.layout.item_registro_calendario, null);
+            ((TextView)v.findViewById(R.id.tvTipo)).setText("Residuo");
+            ((TextView)v.findViewById(R.id.tvPeso)).setText(r.peso);
+            ((TextView)v.findViewById(R.id.tvDescripcion)).setText(r.tipoResiduo);
+            ((TextView)v.findViewById(R.id.tvHoraFoto)).setText(r.hora + " - 1 foto");
+            layoutRegistros.addView(v);
         }
     }
 
-    // Clase modelo para registros del calendario
-    private static class RegistroCalendario {
+    private static class RegistroBD {
         int ano, mes, dia;
-        String tipo, peso, ubicacion, horaFoto, descripcion, recomendacion;
-
-        RegistroCalendario(int ano, int mes, int dia, String tipo, String peso,
-                           String ubicacion, String horaFoto, String descripcion, String recomendacion) {
-            this.ano = ano;
-            this.mes = mes;
-            this.dia = dia;
-            this.tipo = tipo;
-            this.peso = peso;
-            this.ubicacion = ubicacion;
-            this.horaFoto = horaFoto;
-            this.descripcion = descripcion;
-            this.recomendacion = recomendacion;
+        String tipoResiduo, peso, hora;
+        RegistroBD(int ano, int mes, int dia, String tipoResiduo, String peso, String hora) {
+            this.ano = ano; this.mes = mes; this.dia = dia; this.tipoResiduo = tipoResiduo; this.peso = peso; this.hora = hora;
         }
     }
 }

@@ -1,4 +1,25 @@
 <resources>
+<<<<<<< HEAD
+    <string name="app_name">Proyecto</string>
+    <string name="registros_titulo">Registros</string>
+    <string name="resumen_por_mes">Resumen por mes</string>
+    <string name="registros_recientes">Registros recientes</string>
+    <string name="todo">Todo</string>
+    <string name="seleccionar_categoria">Seleccionar categoría</string>
+    <string name="seleccionar_mes">Seleccionar mes</string>
+    <string name="enero">Enero</string>
+    <string name="febrero">Febrero</string>
+    <string name="marzo">Marzo</string>
+    <string name="abril">Abril</string>
+    <string name="mayo">Mayo</string>
+    <string name="junio">Junio</string>
+    <string name="julio">Julio</string>
+    <string name="agosto">Agosto</string>
+    <string name="septiembre">Septiembre</string>
+    <string name="octubre">Octubre</string>
+    <string name="noviembre">Noviembre</string>
+    <string name="diciembre">Diciembre</string>
+=======
     <!-- Nombre de la app -->
     <string name="app_name">ECOLIM S.A.C.</string>
 
@@ -84,4 +105,5 @@
     <string name="selecciona_punto">Haz clic en el mapa para seleccionar un punto</string>
     <string name="bienvenido_usuario">Bienvenido %s</string>
     <string name="error_login">Usuario o contraseña incorrectos</string>
+>>>>>>> 80f27eddca501b840cd41b7324c671f4c7462bf5
 </resources>

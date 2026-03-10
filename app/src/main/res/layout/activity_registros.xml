@@ -21,13 +21,27 @@
             android:layout_height="40dp"
             android:src="@android:drawable/ic_menu_close_clear_cancel"
             android:background="@android:color/transparent"
+<<<<<<< HEAD
+            android:contentDescription="Botón para regresar"
+=======
             android:contentDescription="Regresar"
+>>>>>>> 80f27eddca501b840cd41b7324c671f4c7462bf5
             android:scaleType="centerInside"/>
 
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+<<<<<<< HEAD
+            android:text="@string/registros_titulo"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:textColor="#000000"
+            android:gravity="center"/>
+    </LinearLayout>
+
+    <!-- FILTROS: Categoría y Mes -->
+=======
             android:text="📋 Historial de recolecciones"
             android:textSize="20sp"
             android:textStyle="bold"
@@ -36,6 +50,7 @@
     </LinearLayout>
 
     <!-- FILTROS: Categoría y Mes (AGREGADOS) -->
+>>>>>>> 80f27eddca501b840cd41b7324c671f4c7462bf5
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -56,16 +71,25 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+<<<<<<< HEAD
+                android:text="Categoría:"
+=======
                 android:text=" Categoría:"
+>>>>>>> 80f27eddca501b840cd41b7324c671f4c7462bf5
                 android:textSize="12sp"
                 android:textColor="#666666"/>
 
             <Spinner
                 android:id="@+id/spinnerCategoria"
                 android:layout_width="match_parent"
+<<<<<<< HEAD
+                android:layout_height="48dp"
+                android:background="@drawable/spinner_border"/>
+=======
                 android:layout_height="40dp"
                 android:background="@drawable/spinner_border"
                 android:padding="8dp"/>
+>>>>>>> 80f27eddca501b840cd41b7324c671f4c7462bf5
         </LinearLayout>
 
         <!-- Spinner de Mes -->
@@ -79,13 +103,33 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+<<<<<<< HEAD
+                android:text="Mes:"
+=======
                 android:text=" Mes:"
+>>>>>>> 80f27eddca501b840cd41b7324c671f4c7462bf5
                 android:textSize="12sp"
                 android:textColor="#666666"/>
 
             <Spinner
                 android:id="@+id/spinnerMes"
                 android:layout_width="match_parent"
+<<<<<<< HEAD
+                android:layout_height="48dp"
+                android:background="@drawable/spinner_border"/>
+        </LinearLayout>
+    </LinearLayout>
+
+    <!-- Gráfico de barras (se actualizará según filtros) -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="220dp"
+        android:orientation="vertical"
+        android:background="#FFFFFF"
+        android:padding="16dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginBottom="8dp">
+=======
                 android:layout_height="40dp"
                 android:background="@drawable/spinner_border"
                 android:padding="8dp"/>
@@ -101,10 +145,23 @@
         android:background="#FFFFFF"
         android:layout_marginBottom="8dp"
         android:visibility="gone"> <!-- Lo ocultamos para no duplicar -->
+>>>>>>> 80f27eddca501b840cd41b7324c671f4c7462bf5
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+<<<<<<< HEAD
+            android:text="@string/resumen_por_mes"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:textColor="#333333"
+            android:layout_marginBottom="8dp"/>
+
+        <com.github.mikephil.charting.charts.BarChart
+            android:id="@+id/barChart"
+            android:layout_width="match_parent"
+            android:layout_height="180dp"/>
+=======
             android:text="🔍 Filtrar por:"
             android:textSize="14sp"
             android:textStyle="bold"
@@ -299,12 +356,22 @@
                     android:textColor="#222120"/>
             </LinearLayout>
         </androidx.cardview.widget.CardView>
+>>>>>>> 80f27eddca501b840cd41b7324c671f4c7462bf5
     </LinearLayout>
 
     <!-- Título de la lista -->
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+<<<<<<< HEAD
+        android:text="@string/registros_recientes"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:textColor="#333333"
+        android:padding="16dp"/>
+
+    <!-- Lista de registros filtrados -->
+=======
         android:text="  Registros recientes"
         android:textSize="16sp"
         android:textStyle="bold"
@@ -313,11 +380,16 @@
         android:paddingBottom="8dp"/>
 
     <!-- Lista de registros -->
+>>>>>>> 80f27eddca501b840cd41b7324c671f4c7462bf5
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+<<<<<<< HEAD
+        android:paddingHorizontal="12dp"/>
+=======
         android:paddingHorizontal="12dp"
         android:paddingBottom="16dp" />
+>>>>>>> 80f27eddca501b840cd41b7324c671f4c7462bf5
 
 </LinearLayout>

@@ -36,6 +36,14 @@ dependencies {
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.3.0")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.7.0")
+<<<<<<< HEAD
+    implementation("com.google.ai.client.generativeai:generativeai:0.9.0")
+    implementation("androidx.cardview:cardview:1.0.0")
+    implementation("androidx.recyclerview:recyclerview:1.3.2")
+    implementation("com.google.guava:guava:31.0.1-android")
+    implementation("com.github.PhilJay:MPAndroidChart:v3.1.0")
+}
+=======
     implementation("com.google.android.gms:play-services-maps:18.2.0")
     implementation("com.google.android.gms:play-services-location:21.2.0")
     implementation("androidx.cardview:cardview:1.0.0")
@@ -48,3 +56,4 @@ dependencies {
 
 
 }
+>>>>>>> 80f27eddca501b840cd41b7324c671f4c7462bf5

@@ -5,19 +5,36 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
+<<<<<<< HEAD
+    <TextView
+        android:id="@+id/tvInstrucciones"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:text="Bienvenido al Sistema de Registro"
+        android:textSize="18sp" />
+=======
     <fragment
         android:id="@+id/map"
         android:name="com.google.android.gms.maps.SupportMapFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@+id/btnConfirmar" />
+>>>>>>> 80f27eddca501b840cd41b7324c671f4c7462bf5
 
     <Button
         android:id="@+id/btnConfirmar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
+<<<<<<< HEAD
+        android:text="Comenzar Registro"
+        android:padding="16dp" />
+
+</RelativeLayout>
+=======
         android:text="Confirma tu ubicación"
         android:padding="16dp" />
 
 </RelativeLayout>
+>>>>>>> 80f27eddca501b840cd41b7324c671f4c7462bf5

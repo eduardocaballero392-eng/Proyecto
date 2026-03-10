@@ -3,16 +3,24 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <uses-permission android:name="android.permission.INTERNET" />
+<<<<<<< HEAD
+=======
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+>>>>>>> 80f27eddca501b840cd41b7324c671f4c7462bf5
     <uses-permission android:name="android.permission.CAMERA" />
 
     <uses-feature android:name="android.hardware.camera" android:required="false" />
 
+<<<<<<< HEAD
     <queries>
         <intent>
             <action android:name="android.media.action.IMAGE_CAPTURE" />
         </intent>
     </queries>
 
+=======
+>>>>>>> 80f27eddca501b840cd41b7324c671f4c7462bf5
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -24,19 +32,42 @@
         android:theme="@style/Theme.Proyecto"
         tools:targetApi="31">
 
+<<<<<<< HEAD
         <activity
             android:name=".LoginActivity"
             android:exported="true">
+=======
+        <!-- API Key de Google Maps -->
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyBgvzHi0dZOkS8tZZnbSLZ3J5AW2ZK_gtQ" />
+
+        <!-- Login Activity -->
+        <activity
+            android:name=".LoginActivity"
+            android:exported="true"
+            android:theme="@style/Theme.Proyecto">
+>>>>>>> 80f27eddca501b840cd41b7324c671f4c7462bf5
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
 
+<<<<<<< HEAD
+=======
+        <!-- Home Activity -->
+        <activity
+            android:name=".HomeActivity"
+            android:exported="false" />
+
+        <!-- Main Activity (Mapa) -->
+>>>>>>> 80f27eddca501b840cd41b7324c671f4c7462bf5
         <activity
             android:name=".MainActivity"
             android:exported="false" />
 
+<<<<<<< HEAD
         <activity
             android:name=".EvidenciaActivity"
             android:exported="false" />
@@ -46,10 +77,31 @@
         <activity
             android:name=".RegistrosActivity"
             android:exported="false" />
+=======
+        <!-- ¡¡¡ EVIDENCIA ACTIVITY (AGREGADA) !!! -->
+        <activity
+            android:name=".EvidenciaActivity"
+            android:exported="false" />
+
+        <!-- Registros Activity -->
+        <activity
+            android:name=".RegistrosActivity"
+            android:exported="false" />
+
+        <!-- Calendario Activity -->
+>>>>>>> 80f27eddca501b840cd41b7324c671f4c7462bf5
         <activity
             android:name=".CalendarioActivity"
             android:exported="false" />
 
+<<<<<<< HEAD
+=======
+        <!-- Perfil Activity -->
+        <activity
+            android:name=".PerfilActivity"
+            android:exported="false" />
+
+>>>>>>> 80f27eddca501b840cd41b7324c671f4c7462bf5
     </application>
 
 </manifest>

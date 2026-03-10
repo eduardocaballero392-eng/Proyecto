@@ -1,6 +1,9 @@
 package com.pen.proyecto;
 
+<<<<<<< HEAD
 import android.graphics.Color;
+=======
+>>>>>>> 80f27eddca501b840cd41b7324c671f4c7462bf5
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -13,6 +16,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+<<<<<<< HEAD
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.data.BarData;
@@ -22,6 +26,9 @@ import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+=======
+import java.util.ArrayList;
+>>>>>>> 80f27eddca501b840cd41b7324c671f4c7462bf5
 import java.util.List;
 
 public class RegistrosActivity extends AppCompatActivity {
@@ -29,16 +36,26 @@ public class RegistrosActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
     private RegistrosAdapter adapter;
     private ImageButton btnAtras;
+<<<<<<< HEAD
     private BarChart barChart;
+=======
+>>>>>>> 80f27eddca501b840cd41b7324c671f4c7462bf5
 
     // Spinners para filtros
     private Spinner spinnerCategoria, spinnerMes;
 
+<<<<<<< HEAD
+=======
+    // TextViews para estadísticas
+    private TextView tvTotalRegistros, tvPesoTotal, tvPesoMes;
+
+>>>>>>> 80f27eddca501b840cd41b7324c671f4c7462bf5
     // Datos completos
     private List<RegistroItem> todosLosRegistros;
     private List<RegistroItem> registrosFiltrados;
 
     // Arrays para filtros
+<<<<<<< HEAD
     private String[] categorias = {"Todo", "Papel/Cartón", "Plástico", "Vidrio", "Orgánico", "Mixto"};
     private String[] meses = {"Todo", "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio",
             "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"};
@@ -46,6 +63,15 @@ public class RegistrosActivity extends AppCompatActivity {
     // Filtros seleccionados
     private String categoriaSeleccionada = "Todo";
     private String mesSeleccionado = "Todo";
+=======
+    private String[] categorias = {"Todos", "Papel/Cartón", "Plástico", "Vidrio", "Orgánico", "Mixto"};
+    private String[] meses = {"Todos", "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio",
+            "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"};
+
+    // Filtros seleccionados
+    private String categoriaSeleccionada = "Todos";
+    private String mesSeleccionado = "Todos";
+>>>>>>> 80f27eddca501b840cd41b7324c671f4c7462bf5
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,10 +81,23 @@ public class RegistrosActivity extends AppCompatActivity {
         // Inicializar vistas
         recyclerView = findViewById(R.id.recyclerView);
         btnAtras = findViewById(R.id.btnAtras);
+<<<<<<< HEAD
         barChart = findViewById(R.id.barChart);
         spinnerCategoria = findViewById(R.id.spinnerCategoria);
         spinnerMes = findViewById(R.id.spinnerMes);
 
+=======
+
+        // Spinners
+        spinnerCategoria = findViewById(R.id.spinnerCategoria);
+        spinnerMes = findViewById(R.id.spinnerMes);
+
+        // Estadísticas
+        tvTotalRegistros = findViewById(R.id.tvTotalRegistros);
+        tvPesoTotal = findViewById(R.id.tvPesoTotal);
+        tvPesoMes = findViewById(R.id.tvPesoMes);
+
+>>>>>>> 80f27eddca501b840cd41b7324c671f4c7462bf5
         // Configurar RecyclerView
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
@@ -148,16 +187,28 @@ public class RegistrosActivity extends AppCompatActivity {
 
     private void aplicarFiltros() {
         registrosFiltrados = new ArrayList<>();
+<<<<<<< HEAD
 
         // Aplicar filtros a los datos
         for (RegistroItem item : todosLosRegistros) {
             boolean cumpleCategoria = categoriaSeleccionada.equals("Todo") ||
                     item.getTipo().equals(categoriaSeleccionada);
             boolean cumpleMes = mesSeleccionado.equals("Todo") ||
+=======
+        float pesoTotal = 0;
+        float pesoMes = 0;
+
+        // Aplicar filtros a los datos
+        for (RegistroItem item : todosLosRegistros) {
+            boolean cumpleCategoria = categoriaSeleccionada.equals("Todos") ||
+                    item.getTipo().equals(categoriaSeleccionada);
+            boolean cumpleMes = mesSeleccionado.equals("Todos") ||
+>>>>>>> 80f27eddca501b840cd41b7324c671f4c7462bf5
                     item.getMes().equals(mesSeleccionado);
 
             if (cumpleCategoria && cumpleMes) {
                 registrosFiltrados.add(item);
+<<<<<<< HEAD
             }
         }
 
@@ -268,6 +319,32 @@ public class RegistrosActivity extends AppCompatActivity {
             case "Diciembre": return 11;
             default: return -1;
         }
+=======
+
+                // Calcular pesos
+                float peso = Float.parseFloat(item.getPeso().replace(" kg", ""));
+                pesoTotal += peso;
+
+                if (item.getMes().equals(mesSeleccionado) || mesSeleccionado.equals("Todos")) {
+                    pesoMes += peso;
+                }
+            }
+        }
+
+        // Actualizar estadísticas
+        tvTotalRegistros.setText(String.valueOf(registrosFiltrados.size()));
+        tvPesoTotal.setText(String.format("%.1f kg", pesoTotal));
+
+        if (mesSeleccionado.equals("Todos")) {
+            tvPesoMes.setText(String.format("%.1f kg", pesoMes));
+        } else {
+            tvPesoMes.setText(String.format("%.1f kg", pesoMes));
+        }
+
+        // Actualizar RecyclerView
+        adapter = new RegistrosAdapter(registrosFiltrados);
+        recyclerView.setAdapter(adapter);
+>>>>>>> 80f27eddca501b840cd41b7324c671f4c7462bf5
     }
 
     // Clase modelo para los registros

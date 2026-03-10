@@ -146,7 +146,7 @@ public class HomeActivity extends AppCompatActivity {
 
         if (cursor.moveToFirst()) {
             do {
-                String desc = cursor.getString(cursor.getColumnIndexOrThrow(MySQLiteHelper.COLUMN_REG_DESCRIPCION));
+                String tipo = cursor.getString(cursor.getColumnIndexOrThrow(MySQLiteHelper.COLUMN_REG_DESCRIPCION));
                 String fecha = cursor.getString(cursor.getColumnIndexOrThrow(MySQLiteHelper.COLUMN_REG_FECHA));
                 double peso = cursor.getDouble(cursor.getColumnIndexOrThrow(MySQLiteHelper.COLUMN_REG_PESO));
 
@@ -154,8 +154,9 @@ public class HomeActivity extends AppCompatActivity {
                 TextView tvTitulo = itemView.findViewById(R.id.tvTituloReciente);
                 TextView tvSubtitulo = itemView.findViewById(R.id.tvSubtituloReciente);
 
-                tvTitulo.setText(String.format(Locale.getDefault(), "Residuo: %.1f kg", peso));
-                tvSubtitulo.setText(fecha + " - " + desc);
+                // Mostrar el tipo (categoría) y los kg
+                tvTitulo.setText(tipo + ": " + String.format(Locale.getDefault(), "%.2f kg", peso));
+                tvSubtitulo.setText("Fecha: " + fecha);
 
                 containerRecientes.addView(itemView);
             } while (cursor.moveToNext());

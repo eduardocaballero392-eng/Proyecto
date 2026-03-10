@@ -38,7 +38,8 @@ public class RegistrosActivity extends AppCompatActivity {
     private List<RegistroItem> todosLosRegistros;
     private List<RegistroItem> registrosFiltrados;
 
-    private String[] categorias = {"Todo", "Papel", "Cartón", "Plástico", "Vidrio", "Orgánico", "Mixto"};
+    // Categorías alineadas con EvidenciaActivity
+    private String[] categorias = {"Todo", "Papel", "Cartón", "Plástico", "Vidrio", "Orgánico", "Metales", "Otros"};
     private String[] meses = {"Todo", "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio",
             "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"};
 
@@ -64,9 +65,6 @@ public class RegistrosActivity extends AppCompatActivity {
 
         configurarSpinners();
         cargarRegistrosDesdeBD();
-        aplicarFiltros();
-
-        btnAtras.setOnClickListener(v -> finish());
     }
 
     private void configurarSpinners() {
@@ -109,19 +107,28 @@ public class RegistrosActivity extends AppCompatActivity {
                 double peso = cursor.getDouble(cursor.getColumnIndexOrThrow(MySQLiteHelper.COLUMN_REG_PESO));
                 String fecha = cursor.getString(cursor.getColumnIndexOrThrow(MySQLiteHelper.COLUMN_REG_FECHA));
                 String hora = cursor.getString(cursor.getColumnIndexOrThrow(MySQLiteHelper.COLUMN_REG_HORA));
+                String sucursal = cursor.getString(cursor.getColumnIndexOrThrow(MySQLiteHelper.COLUMN_REG_SUCURSAL));
                 
                 String mesNombre = obtenerNombreMesDesdeFecha(fecha);
-                todosLosRegistros.add(new RegistroItem("Residuo", tipo, peso, mesNombre, fecha, hora));
+                todosLosRegistros.add(new RegistroItem(tipo, sucursal != null ? sucursal : "Sin sucursal", peso, mesNombre, fecha, hora));
             } while (cursor.moveToNext());
         }
         cursor.close();
+        aplicarFiltros();
     }
 
     private String obtenerNombreMesDesdeFecha(String fecha) {
         if (fecha == null || !fecha.contains("-")) return "Todo";
-        String[] parts = fecha.split("-");
-        int mesInt = Integer.parseInt(parts[1]);
-        return meses[mesInt];
+        try {
+            String[] parts = fecha.split("-");
+            int mesInt = Integer.parseInt(parts[1]); // 01 -> 1
+            if (mesInt >= 1 && mesInt <= 12) {
+                return meses[mesInt];
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return "Todo";
     }
 
     private void aplicarFiltros() {
@@ -140,42 +147,43 @@ public class RegistrosActivity extends AppCompatActivity {
     }
 
     private void actualizarGrafico() {
-        if (registrosFiltrados.isEmpty()) {
+        if (registrosFiltrados == null || registrosFiltrados.isEmpty()) {
             barChart.clear();
             return;
         }
 
-        int[] registrosPorMes = new int[12];
+        float[] pesoPorMes = new float[12];
         for (RegistroItem item : registrosFiltrados) {
             int idx = obtenerIndiceMes(item.getMes());
-            if (idx >= 0) registrosPorMes[idx]++;
+            if (idx >= 0) pesoPorMes[idx] += item.getPeso();
         }
 
         ArrayList<BarEntry> entries = new ArrayList<>();
         ArrayList<String> labels = new ArrayList<>();
         String[] shortMeses = {"Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Sep", "Oct", "Nov", "Dic"};
 
+        int count = 0;
         for (int i = 0; i < 12; i++) {
-            if (registrosPorMes[i] > 0 || !mesSeleccionado.equals("Todo")) {
-                if (mesSeleccionado.equals("Todo") || i == obtenerIndiceMes(mesSeleccionado)) {
-                    entries.add(new BarEntry(labels.size(), registrosPorMes[i]));
-                    labels.add(shortMeses[i]);
-                }
+            if (mesSeleccionado.equals("Todo") || i == obtenerIndiceMes(mesSeleccionado)) {
+                entries.add(new BarEntry(count++, pesoPorMes[i]));
+                labels.add(shortMeses[i]);
             }
         }
 
-        BarDataSet dataSet = new BarDataSet(entries, "Registros");
+        BarDataSet dataSet = new BarDataSet(entries, "Peso por Mes (kg)");
         dataSet.setColor(Color.parseColor("#2E7D32"));
         BarData barData = new BarData(dataSet);
         barChart.setData(barData);
         barChart.getXAxis().setValueFormatter(new IndexAxisValueFormatter(labels));
         barChart.getXAxis().setPosition(XAxis.XAxisPosition.BOTTOM);
+        barChart.getXAxis().setGranularity(1f);
+        barChart.getDescription().setEnabled(false);
         barChart.invalidate();
     }
 
     private int obtenerIndiceMes(String nombreMes) {
         for (int i = 1; i < meses.length; i++) {
-            if (meses[i].equals(nombreMes)) return i - 1;
+            if (meses[i].equalsIgnoreCase(nombreMes)) return i - 1;
         }
         return -1;
     }
@@ -183,12 +191,13 @@ public class RegistrosActivity extends AppCompatActivity {
     public static class RegistroItem {
         private String titulo, material, mes, fecha, hora;
         private double peso;
-        public RegistroItem(String titulo, String material, double peso, String mes, String fecha, String hora) {
-            this.titulo = titulo; this.material = material; this.peso = peso; this.mes = mes; this.fecha = fecha; this.hora = hora;
+        public RegistroItem(String material, String sucursal, double peso, String mes, String fecha, String hora) {
+            this.material = material; this.titulo = sucursal; this.peso = peso; this.mes = mes; this.fecha = fecha; this.hora = hora;
         }
         public String getTitulo() { return titulo; }
         public String getMaterial() { return material; }
-        public String getPesoStr() { return String.format(Locale.getDefault(), "%.1f kg", peso); }
+        public double getPeso() { return peso; }
+        public String getPesoStr() { return String.format(Locale.getDefault(), "%.2f kg", peso); }
         public String getMes() { return mes; }
         public String getFechaHora() { return fecha + " " + hora; }
     }
@@ -204,11 +213,12 @@ public class RegistrosActivity extends AppCompatActivity {
         @Override
         public void onBindViewHolder(ViewHolder holder, int position) {
             RegistroItem item = registros.get(position);
-            holder.tvTipo.setText(item.getTitulo());
+            // Ahora mostramos el material (categoría) como título principal
+            holder.tvTipo.setText(item.getMaterial()); 
             holder.tvPeso.setText(item.getPesoStr());
-            holder.tvDescripcion.setText(item.getMaterial());
+            // Mostramos la sucursal en la descripción
+            holder.tvDescripcion.setText("Sucursal: " + item.getTitulo());
             holder.tvHoraFoto.setText(item.getFechaHora());
-            // Ocultar ubicacion si existiera algun campo extra
         }
         @Override
         public int getItemCount() { return registros.size(); }

@@ -7,7 +7,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class MySQLiteHelper extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "gestion_residuos.db";
-    private static final int DATABASE_VERSION = 3; // Incrementado para añadir la columna HORA
+    private static final int DATABASE_VERSION = 4; // Incrementado para añadir sucursal y comentario
 
     // Tabla Admin
     public static final String TABLE_ADMIN = "admin";
@@ -18,12 +18,14 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
     // Tabla Registros
     public static final String TABLE_REGISTROS = "registros";
     public static final String COLUMN_REG_ID = "id";
-    public static final String COLUMN_REG_DESCRIPCION = "descripcion";
+    public static final String COLUMN_REG_DESCRIPCION = "descripcion"; // Usado para Tipo de Residuo
     public static final String COLUMN_REG_PESO = "peso";
     public static final String COLUMN_REG_FECHA = "fecha";
-    public static final String COLUMN_REG_HORA = "hora"; // Nueva columna para la hora real
+    public static final String COLUMN_REG_HORA = "hora";
     public static final String COLUMN_REG_IMAGEN = "imagen";
     public static final String COLUMN_REG_EMPLEADO_ID = "empleado_id";
+    public static final String COLUMN_REG_SUCURSAL = "sucursal";
+    public static final String COLUMN_REG_COMENTARIO = "comentario";
 
     private static final String CREATE_TABLE_ADMIN = "CREATE TABLE " + TABLE_ADMIN + " (" +
             COLUMN_ADMIN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
@@ -38,6 +40,8 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
             COLUMN_REG_HORA + " TEXT, " +
             COLUMN_REG_IMAGEN + " TEXT, " +
             COLUMN_REG_EMPLEADO_ID + " INTEGER, " +
+            COLUMN_REG_SUCURSAL + " TEXT, " +
+            COLUMN_REG_COMENTARIO + " TEXT, " +
             "FOREIGN KEY(" + COLUMN_REG_EMPLEADO_ID + ") REFERENCES " + TABLE_ADMIN + "(" + COLUMN_ADMIN_ID + "));";
 
     public MySQLiteHelper(Context context) {
@@ -56,8 +60,13 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_REGISTROS);
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_ADMIN);
-        onCreate(db);
+        if (oldVersion < 4) {
+            db.execSQL("ALTER TABLE " + TABLE_REGISTROS + " ADD COLUMN " + COLUMN_REG_SUCURSAL + " TEXT;");
+            db.execSQL("ALTER TABLE " + TABLE_REGISTROS + " ADD COLUMN " + COLUMN_REG_COMENTARIO + " TEXT;");
+        } else {
+            db.execSQL("DROP TABLE IF EXISTS " + TABLE_REGISTROS);
+            db.execSQL("DROP TABLE IF EXISTS " + TABLE_ADMIN);
+            onCreate(db);
+        }
     }
 }

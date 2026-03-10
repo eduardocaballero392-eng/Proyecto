@@ -4,14 +4,51 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="#F5F5F5">
+    android:background="#E8F5E9">
 
-    <!-- Top Toolbar Background (Purple) -->
-
-    <View
+    <!-- Header Toolbar -->
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="60dp"
-        android:background="#673AB7" />
+        android:background="#2E7D32"
+        android:paddingHorizontal="16dp">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
+
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@android:drawable/ic_menu_share"
+                app:tint="#FFFFFF"
+                android:layout_marginEnd="8dp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Registrar Recolección"
+                android:textColor="#FFFFFF"
+                android:textSize="18sp"
+                android:textStyle="bold"/>
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/btnVolver"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:text="← VOLVER"
+            android:textColor="#FFFFFF"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            android:clickable="true"
+            android:focusable="true"/>
+    </RelativeLayout>
 
     <ScrollView
         android:layout_width="match_parent"
@@ -23,83 +60,12 @@
             android:orientation="vertical"
             android:padding="20dp">
 
-            <!-- Título con navegación -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:gravity="center_vertical"
-                android:layout_marginBottom="8dp">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Evidencia fotográfica"
-                    android:textSize="22sp"
-                    android:textStyle="bold"
-                    android:textColor="#222222"/>
-            </LinearLayout>
-
-            <!-- Subtítulo -->
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Toma fotos de los residuos para análisis con IA"
-                android:textSize="14sp"
-                android:textColor="#888888"
-                android:layout_marginBottom="24dp"/>
-
-            <!-- Card para Foto -->
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:cardCornerRadius="16dp"
-                app:cardElevation="2dp"
-                android:layout_marginBottom="20dp">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:gravity="center"
-                    android:padding="30dp">
-
-                    <ImageView
-                        android:layout_width="80dp"
-                        android:layout_height="80dp"
-                        android:src="@android:drawable/ic_menu_camera"
-                        app:tint="#90CAF9"
-                        android:layout_marginBottom="16dp"/>
-
-                    <Button
-                        android:id="@+id/btnFoto"
-                        android:layout_width="match_parent"
-                        android:layout_height="54dp"
-                        android:text="Tomar Foto de Evidencia"
-                        android:textAllCaps="false"
-                        android:textSize="16sp"
-                        android:textColor="#FFFFFF"
-                        android:backgroundTint="#2196F3"
-                        app:cornerRadius="27dp"
-                        android:layout_marginHorizontal="20dp"/>
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="La IA analizará la imagen automáticamente"
-                        android:textSize="12sp"
-                        android:textColor="#AAAAAA"
-                        android:layout_marginTop="12dp"/>
-                </LinearLayout>
-            </androidx.cardview.widget.CardView>
-
-            <!-- Card Análisis IA -->
-            <androidx.cardview.widget.CardView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:cardCornerRadius="16dp"
-                app:cardElevation="2dp"
-                android:layout_marginBottom="20dp">
+                app:cardCornerRadius="12dp"
+                app:cardElevation="0dp"
+                app:cardBackgroundColor="#FFFFFF">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -107,111 +73,164 @@
                     android:orientation="vertical"
                     android:padding="20dp">
 
+                    <!-- Tipo de Residuo -->
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="🔐 Análisis de IA"
-                        android:textSize="18sp"
+                        android:text="Tipo de Residuo *"
+                        android:textColor="#2E7D32"
                         android:textStyle="bold"
-                        android:textColor="#333333"
-                        android:layout_marginBottom="16dp"/>
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Descripción de residuos:"
                         android:textSize="14sp"
-                        android:textStyle="bold"
-                        android:textColor="#444444"
                         android:layout_marginBottom="8dp"/>
 
-                    <EditText
-                        android:id="@+id/etDescripcion"
-                        android:layout_width="match_parent"
-                        android:layout_height="120dp"
-                        android:hint="La descripción aparecerá aquí después de tomar la foto..."
-                        android:gravity="top|start"
-                        android:padding="16dp"
-                        android:textSize="14sp"
-                        android:background="@drawable/edittext_border"
-                        android:layout_marginBottom="16dp"/>
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Sugerencia de reciclaje:"
-                        android:textSize="14sp"
-                        android:textStyle="bold"
-                        android:textColor="#444444"
-                        android:layout_marginBottom="8dp"/>
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="El sistema identificará automáticamente el tipo de residuo y su contenedor correspondiente."
-                        android:textSize="14sp"
-                        android:textColor="#666666"
-                        android:lineSpacingExtra="4dp"/>
-                </LinearLayout>
-            </androidx.cardview.widget.CardView>
-
-            <!-- Card Detalles del registro -->
-            <androidx.cardview.widget.CardView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:cardCornerRadius="16dp"
-                app:cardElevation="2dp"
-                android:layout_marginBottom="32dp">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:padding="20dp">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Detalles del registro"
-                        android:textSize="18sp"
-                        android:textStyle="bold"
-                        android:textColor="#333333"
-                        android:layout_marginBottom="16dp"/>
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Peso estimado (kg):"
-                        android:textSize="14sp"
-                        android:textColor="#666666"
-                        android:layout_marginBottom="8dp"/>
-
-                    <EditText
-                        android:id="@+id/etPesoEstimado"
+                    <Spinner
+                        android:id="@+id/spinnerTipoResiduo"
                         android:layout_width="match_parent"
                         android:layout_height="56dp"
-                        android:hint="0.0"
-                        android:inputType="numberDecimal"
+                        android:background="@drawable/edittext_border"
+                        android:paddingHorizontal="12dp"
+                        android:layout_marginBottom="16dp"/>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginBottom="16dp"
+                        android:weightSum="2">
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1.2"
+                            android:orientation="vertical"
+                            android:paddingEnd="8dp">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Cantidad *"
+                                android:textColor="#2E7D32"
+                                android:textStyle="bold"
+                                android:textSize="14sp"
+                                android:layout_marginBottom="8dp"/>
+
+                            <EditText
+                                android:id="@+id/etPesoEstimado"
+                                android:layout_width="match_parent"
+                                android:layout_height="56dp"
+                                android:background="@drawable/edittext_border"
+                                android:hint="0,00"
+                                android:inputType="numberDecimal"
+                                android:paddingHorizontal="16dp"
+                                android:textColor="#000000"/>
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0.8"
+                            android:orientation="vertical"
+                            android:paddingStart="8dp">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Unidad *"
+                                android:textColor="#2E7D32"
+                                android:textStyle="bold"
+                                android:textSize="14sp"
+                                android:layout_marginBottom="8dp"/>
+
+                            <EditText
+                                android:layout_width="match_parent"
+                                android:layout_height="56dp"
+                                android:background="@drawable/edittext_border"
+                                android:text="kg"
+                                android:enabled="false"
+                                android:paddingHorizontal="16dp"
+                                android:textColor="#000000"
+                                android:textStyle="bold"/>
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <!-- Fecha y Hora -->
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Fecha y Hora *"
+                        android:textColor="#2E7D32"
+                        android:textStyle="bold"
+                        android:textSize="14sp"
+                        android:layout_marginBottom="8dp"/>
+
+                    <TextView
+                        android:id="@+id/tvFechaHora"
+                        android:layout_width="match_parent"
+                        android:layout_height="56dp"
+                        android:background="@drawable/edittext_border"
+                        android:padding="16dp"
+                        android:text="09/03/2025 16:32"
+                        android:textColor="#000000"
+                        android:layout_marginBottom="16dp"
+                        android:gravity="center_vertical"/>
+
+                    <!-- Sucursal -->
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Sucursal"
+                        android:textColor="#2E7D32"
+                        android:textStyle="bold"
+                        android:textSize="14sp"
+                        android:layout_marginBottom="8dp"/>
+
+                    <EditText
+                        android:id="@+id/etSucursal"
+                        android:layout_width="match_parent"
+                        android:layout_height="56dp"
+                        android:background="@drawable/edittext_border"
+                        android:hint="Sucursal San Isidro"
                         android:paddingHorizontal="16dp"
+                        android:textColor="#000000"
+                        android:layout_marginBottom="16dp"/>
+
+                    <!-- Comentarios (opcional) -->
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Comentarios (opcional)"
+                        android:textColor="#2E7D32"
+                        android:textStyle="bold"
+                        android:textSize="14sp"
+                        android:layout_marginBottom="8dp"/>
+
+                    <EditText
+                        android:id="@+id/etComentarios"
+                        android:layout_width="match_parent"
+                        android:layout_height="100dp"
+                        android:background="@drawable/edittext_border"
+                        android:hint="Escribe observaciones aquí..."
+                        android:gravity="top"
+                        android:padding="12dp"
+                        android:textColor="#000000"
+                        android:layout_marginBottom="24dp"/>
+
+                    <!-- Botón Registrar -->
+                    <Button
+                        android:id="@+id/btnGuardarRegistro"
+                        android:layout_width="match_parent"
+                        android:layout_height="56dp"
+                        android:backgroundTint="#2E7D32"
+                        android:text="REGISTRAR"
+                        android:textColor="#FFFFFF"
+                        android:textStyle="bold"
                         android:textSize="16sp"
-                        android:background="@drawable/edittext_border"/>
+                        app:cornerRadius="4dp"/>
+
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
-
-            <!-- Botón Guardar -->
-            <Button
-                android:id="@+id/btnGuardarRegistro"
-                android:layout_width="match_parent"
-                android:layout_height="60dp"
-                android:text="Confirmar y Guardar"
-                android:textAllCaps="false"
-                android:textSize="18sp"
-                android:textStyle="bold"
-                android:textColor="#FFFFFF"
-                android:backgroundTint="#FF5722"
-                app:cornerRadius="30dp"
-                android:layout_marginBottom="20dp"/>
 
         </LinearLayout>
     </ScrollView>
+
 </LinearLayout>

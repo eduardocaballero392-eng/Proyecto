@@ -49,6 +49,9 @@
         <activity
             android:name=".CalendarioActivity"
             android:exported="false" />
+        <activity
+            android:name=".PerfilActivity"
+            android:exported="false" />
 
     </application>
 

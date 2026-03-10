@@ -38,7 +38,6 @@ public class RegistrosActivity extends AppCompatActivity {
     private List<RegistroItem> todosLosRegistros;
     private List<RegistroItem> registrosFiltrados;
 
-    // Categorías alineadas con EvidenciaActivity
     private String[] categorias = {"Todo", "Papel", "Cartón", "Plástico", "Vidrio", "Orgánico", "Metales", "Otros"};
     private String[] meses = {"Todo", "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio",
             "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"};
@@ -68,12 +67,10 @@ public class RegistrosActivity extends AppCompatActivity {
     }
 
     private void configurarSpinners() {
-        // Spinner Categoría
         ArrayAdapter<String> adapterCat = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, categorias);
         adapterCat.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerCategoria.setAdapter(adapterCat);
 
-        // Spinner Mes
         ArrayAdapter<String> adapterMes = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, meses);
         adapterMes.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerMes.setAdapter(adapterMes);
@@ -121,7 +118,7 @@ public class RegistrosActivity extends AppCompatActivity {
         if (fecha == null || !fecha.contains("-")) return "Todo";
         try {
             String[] parts = fecha.split("-");
-            int mesInt = Integer.parseInt(parts[1]); // 01 -> 1
+            int mesInt = Integer.parseInt(parts[1]);
             if (mesInt >= 1 && mesInt <= 12) {
                 return meses[mesInt];
             }
@@ -134,7 +131,7 @@ public class RegistrosActivity extends AppCompatActivity {
     private void aplicarFiltros() {
         registrosFiltrados = new ArrayList<>();
         for (RegistroItem item : todosLosRegistros) {
-            boolean cumpleCat = categoriaSeleccionada.equals("Todo") || item.getMaterial().equals(categoriaSeleccionada);
+            boolean cumpleCat = categoriaSeleccionada.equals("Todo") || item.getMaterial().equalsIgnoreCase(categoriaSeleccionada);
             boolean cumpleMes = mesSeleccionado.equals("Todo") || item.getMes().equals(mesSeleccionado);
             
             if (cumpleCat && cumpleMes) {
@@ -170,7 +167,10 @@ public class RegistrosActivity extends AppCompatActivity {
             }
         }
 
-        BarDataSet dataSet = new BarDataSet(entries, "Peso por Mes (kg)");
+        // CAMBIO: Ahora la leyenda muestra la categoría seleccionada
+        String labelLeyenda = categoriaSeleccionada.equals("Todo") ? "Residuos Totales" : categoriaSeleccionada;
+        BarDataSet dataSet = new BarDataSet(entries, labelLeyenda);
+        
         dataSet.setColor(Color.parseColor("#2E7D32"));
         BarData barData = new BarData(dataSet);
         barChart.setData(barData);
@@ -197,7 +197,7 @@ public class RegistrosActivity extends AppCompatActivity {
         public String getTitulo() { return titulo; }
         public String getMaterial() { return material; }
         public double getPeso() { return peso; }
-        public String getPesoStr() { return String.format(Locale.getDefault(), "%.2f kg", peso); }
+        public String getPesoStr() { return String.format(Locale.getDefault(), "%.1f kg", peso); }
         public String getMes() { return mes; }
         public String getFechaHora() { return fecha + " " + hora; }
     }
@@ -213,10 +213,10 @@ public class RegistrosActivity extends AppCompatActivity {
         @Override
         public void onBindViewHolder(ViewHolder holder, int position) {
             RegistroItem item = registros.get(position);
-            // Ahora mostramos el material (categoría) como título principal
+            // CAMBIO: El título principal ahora es la categoría (Cartón, Papel, etc.)
             holder.tvTipo.setText(item.getMaterial()); 
             holder.tvPeso.setText(item.getPesoStr());
-            // Mostramos la sucursal en la descripción
+            // CAMBIO: La descripción ahora muestra la sucursal
             holder.tvDescripcion.setText("Sucursal: " + item.getTitulo());
             holder.tvHoraFoto.setText(item.getFechaHora());
         }
